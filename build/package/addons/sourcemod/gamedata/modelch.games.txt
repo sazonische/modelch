@@ -1,0 +1,19 @@
+"Games"
+{
+	"#default"
+	{
+		"Signatures"
+		{
+			"PlayerSpawn"
+			{
+				"library"	"server"
+				"linux"		"\x55\x89\xE5\x57\x56\x53\x81\xEC\xAC\x00\x00\x00\x8B\x55\x08\x89\x14\x24"
+			}
+			"StrAssign"
+			{
+				"library"	"server"
+				"linux"		"\x55\x31\xC0\x89\xE5\x53\x83\xEC\x14\x8B\x5D\x0C\x85\xDB"
+			}
+		}
+	}
+}
