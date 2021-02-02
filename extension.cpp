@@ -83,7 +83,7 @@ bool __cdecl PlayerSpawnHelper(CBaseEntity *pEntity, const char *&model_name, vo
     if (result == Pl_Changed)
     {
         model_name = g_model;
-        reinterpret_cast<int(*)(void*,const char*)>(g_addr_setstr)((void*)((uintptr_t)pEntity+15108), vo_prefix);
+        reinterpret_cast<int(*)(void*,const char*)>(g_addr_setstr)((void*)((uintptr_t)pEntity+15112), vo_prefix);
         return true;
     }
 
