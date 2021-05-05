@@ -65,7 +65,7 @@ bool __cdecl PlayerSpawnHelper(CBaseEntity *pEntity, const char *&model_name, vo
 
     using GetItemDefFn = void*(__cdecl*)(void*);
 
-    bool custom = item && static_cast<char*>(item)[0x7C] && *(int*)(reinterpret_cast<uintptr_t>(reinterpret_cast<GetItemDefFn>(GetVFT(item, 52))(item)) + 584) == 38 && !arg4;
+    bool custom = item && static_cast<char*>(item)[0x7C] && *(int*)(reinterpret_cast<uintptr_t>(reinterpret_cast<GetItemDefFn>(GetVFT(item, 52))(item)) + 616) == 38 && !arg4;
 
     g_model[0] = '\0';
     char vo_prefix[64] = "";
