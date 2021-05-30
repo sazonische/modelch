@@ -134,9 +134,9 @@ bool MdlChagerExt::SDK_OnLoad(char* error, size_t maxlen, bool late)
 
     gameconfs->CloseGameConfigFile(g_pGameConf);
 
-    void *addr_hook = (void*)((uintptr_t)addr + 0x2C4);
-    g_addr_model_normal = (void*)((uintptr_t)addr + 0x1D91);
-    g_addr_model_custom = (void*)((uintptr_t)addr + 0x1E60);
+    void *addr_hook = (void*)((uintptr_t)addr + 0x299);
+    g_addr_model_normal = (void*)((uintptr_t)addr + 0x1DAC);
+    g_addr_model_custom = (void*)((uintptr_t)addr + 0x1E7B);
 
     g_HPlayerSpawn = new Hook(addr_hook, (void*)playerspawn);
     g_HPlayerSpawn->Install();
