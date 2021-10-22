@@ -40,7 +40,7 @@
 /* Basic information exposed publicly */
 #define SMEXT_CONF_NAME			"Model Changer Extension"
 #define SMEXT_CONF_DESCRIPTION	"Change spawn model"
-#define SMEXT_CONF_VERSION		"1.0.0.0"
+#define SMEXT_CONF_VERSION		"1.0.0.1"
 #define SMEXT_CONF_AUTHOR		"Kailo"
 #define SMEXT_CONF_URL			"https://github.com/Kailo97"
 #define SMEXT_CONF_LOGTAG		"MDLCH"
