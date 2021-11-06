@@ -62,10 +62,13 @@ bool __cdecl PlayerSpawnHelper(CBaseEntity *pEntity, const char *&model_name, vo
     //smutils->LogMessage(myself, "Model change for %d %p %i %i", gamehelpers->EntityToBCompatRef(pEntity), item, static_cast<char*>(item)[0x7C], arg4);
 
     cell_t result = Pl_Continue;
-
+#ifdef WIN32
+    using GetItemDefFn = void*(__thiscall*)(void*);
+    bool custom = item && static_cast<char*>(item)[0x7C] && *(int*)(reinterpret_cast<uintptr_t>(reinterpret_cast<GetItemDefFn>(GetVFT(item, 48))(item)) + 616) == 38 && !arg4;
+#else
     using GetItemDefFn = void*(__cdecl*)(void*);
-
     bool custom = item && static_cast<char*>(item)[0x7C] && *(int*)(reinterpret_cast<uintptr_t>(reinterpret_cast<GetItemDefFn>(GetVFT(item, 52))(item)) + 616) == 38 && !arg4;
+#endif
 
     g_model[0] = '\0';
     char vo_prefix[64] = "";
@@ -83,7 +86,11 @@ bool __cdecl PlayerSpawnHelper(CBaseEntity *pEntity, const char *&model_name, vo
     if (result == Pl_Changed)
     {
         model_name = g_model;
+#ifdef WIN32
+        reinterpret_cast<void(__thiscall*)(void*,const char*, int)>(g_addr_setstr)((void*)((uintptr_t)pEntity+15100), vo_prefix, strlen(vo_prefix)+1);
+#else
         reinterpret_cast<int(*)(void*,const char*)>(g_addr_setstr)((void*)((uintptr_t)pEntity+15120), vo_prefix);
+#endif
         return true;
     }
 
@@ -93,6 +100,14 @@ bool __cdecl PlayerSpawnHelper(CBaseEntity *pEntity, const char *&model_name, vo
 
 __declspec(naked) void playerspawn()
 {
+#ifdef WIN32
+    __asm lea eax, [esp+0x38-0x24]
+    __asm push eax
+    __asm push esi
+    __asm lea eax, [esp+0x38-0x18+0x08] //we have pushed twice before
+    __asm push eax
+    __asm push ebx
+#else
     __asm lea eax, [ebp-0x39]
     __asm push eax
     __asm push esi
@@ -100,6 +115,7 @@ __declspec(naked) void playerspawn()
     __asm push eax
     __asm mov eax, [ebp+0x08]
     __asm push eax
+#endif
     __asm call PlayerSpawnHelper
     __asm add esp, 16
 
@@ -134,9 +150,15 @@ bool MdlChagerExt::SDK_OnLoad(char* error, size_t maxlen, bool late)
 
     gameconfs->CloseGameConfigFile(g_pGameConf);
 
+#ifdef WIN32
+    void *addr_hook = (void*)((uintptr_t)addr + 0x6D6);
+    g_addr_model_normal = (void*)((uintptr_t)addr + 0x6FC);
+    g_addr_model_custom = (void*)((uintptr_t)addr + 0x77F);
+#else
     void *addr_hook = (void*)((uintptr_t)addr + 0x25E);
     g_addr_model_normal = (void*)((uintptr_t)addr + 0x19B0);
     g_addr_model_custom = (void*)((uintptr_t)addr + 0x1A82);
+#endif
 
     g_HPlayerSpawn = new Hook(addr_hook, (void*)playerspawn);
     g_HPlayerSpawn->Install();
