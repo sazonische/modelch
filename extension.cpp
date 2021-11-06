@@ -101,10 +101,10 @@ bool __cdecl PlayerSpawnHelper(CBaseEntity *pEntity, const char *&model_name, vo
 __declspec(naked) void playerspawn()
 {
 #ifdef WIN32
-    __asm lea eax, [esp+0x38-0x24]
+    __asm lea eax, [ebp-0x24]
     __asm push eax
     __asm push esi
-    __asm lea eax, [esp+0x38-0x18+0x08] //we have pushed twice before
+    __asm lea eax, [ebp-0x18]
     __asm push eax
     __asm push ebx
 #else
