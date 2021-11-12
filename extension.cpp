@@ -122,6 +122,9 @@ __declspec(naked) void playerspawn()
     __asm test al, al
     __asm jz UseDefaultMdl
 
+#ifdef WIN32
+    __asm lea esi, [g_model]
+#endif
     __asm mov eax, g_addr_model_custom
     __asm jmp eax
 
@@ -152,8 +155,8 @@ bool MdlChagerExt::SDK_OnLoad(char* error, size_t maxlen, bool late)
 
 #ifdef WIN32
     void *addr_hook = (void*)((uintptr_t)addr + 0x6D6);
-    g_addr_model_normal = (void*)((uintptr_t)addr + 0x6FC);
-    g_addr_model_custom = (void*)((uintptr_t)addr + 0x77F);
+    g_addr_model_normal = (void*)((uintptr_t)addr + 0x817);
+    g_addr_model_custom = (void*)((uintptr_t)addr + 0x78B);
 #else
     void *addr_hook = (void*)((uintptr_t)addr + 0x25E);
     g_addr_model_normal = (void*)((uintptr_t)addr + 0x19B0);
