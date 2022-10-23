@@ -156,8 +156,8 @@ bool MdlChagerExt::SDK_OnLoad(char* error, size_t maxlen, bool late)
     g_addr_model_custom = (void*)((uintptr_t)addr + 0x77F);
 #else
     void *addr_hook = (void*)((uintptr_t)addr + 0x25E);
-    g_addr_model_normal = (void*)((uintptr_t)addr + 0x19B0);
-    g_addr_model_custom = (void*)((uintptr_t)addr + 0x1A82);
+    g_addr_model_normal = (void*)((uintptr_t)addr + 0x19A7);
+    g_addr_model_custom = (void*)((uintptr_t)addr + 0x1A79);
 #endif
 
     g_HPlayerSpawn = new Hook(addr_hook, (void*)playerspawn);
