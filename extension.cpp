@@ -151,9 +151,9 @@ bool MdlChagerExt::SDK_OnLoad(char* error, size_t maxlen, bool late)
     gameconfs->CloseGameConfigFile(g_pGameConf);
 
 #ifdef WIN32
-    void *addr_hook = (void*)((uintptr_t)addr + 0x6D6);
-    g_addr_model_normal = (void*)((uintptr_t)addr + 0x6FC);
-    g_addr_model_custom = (void*)((uintptr_t)addr + 0x77F);
+    void *addr_hook = (void*)((uintptr_t)addr + 0x7D0);
+    g_addr_model_normal = (void*)((uintptr_t)addr + 0x7F6);
+    g_addr_model_custom = (void*)((uintptr_t)addr + 0x879);
 #else
     void *addr_hook = (void*)((uintptr_t)addr + 0x25E);
     g_addr_model_normal = (void*)((uintptr_t)addr + 0x19A7);
