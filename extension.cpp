@@ -108,10 +108,14 @@ __declspec(naked) void playerspawn()
     __asm push eax
     __asm push ebx
 #else
-    __asm lea eax, [ebp-0x39]
-    __asm push eax
+	__asm lea ecx, [ebp-0x38]
+	__asm mov eax, edi
+	__asm xor al, 1
+	__asm or al, byte ptr [ecx]
+	__asm mov byte ptr [ecx], al
+    __asm push ecx
     __asm push esi
-    __asm lea eax, [ebp-0x38]
+    __asm lea eax, [esp-0x04] //push address of argument itself as value of argument =)
     __asm push eax
     __asm mov eax, [ebp+0x08]
     __asm push eax
@@ -122,11 +126,17 @@ __declspec(naked) void playerspawn()
     __asm test al, al
     __asm jz UseDefaultMdl
 
+#ifndef WIN32
+	__asm mov edi, [esp-0x0C] //from value used for model_name argument getting actual address for model name
+#endif
     __asm mov eax, g_addr_model_custom
     __asm jmp eax
 
     __asm UseDefaultMdl:
     __asm mov eax, g_addr_model_normal
+#ifndef WIN32
+	__asm test byte ptr [ebp-0x38], 0
+#endif
     __asm jmp eax
 }
 
@@ -155,9 +165,9 @@ bool MdlChagerExt::SDK_OnLoad(char* error, size_t maxlen, bool late)
     g_addr_model_normal = (void*)((uintptr_t)addr + 0x7F6);
     g_addr_model_custom = (void*)((uintptr_t)addr + 0x879);
 #else
-    void *addr_hook = (void*)((uintptr_t)addr + 0x25E);
-    g_addr_model_normal = (void*)((uintptr_t)addr + 0x19A7);
-    g_addr_model_custom = (void*)((uintptr_t)addr + 0x1A79);
+    void *addr_hook = (void*)((uintptr_t)addr + 0xBB4);
+    g_addr_model_normal = (void*)((uintptr_t)addr + 0xBF4);
+    g_addr_model_custom = (void*)((uintptr_t)addr + 0xCF1);
 #endif
 
     g_HPlayerSpawn = new Hook(addr_hook, (void*)playerspawn);
