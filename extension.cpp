@@ -108,11 +108,11 @@ __declspec(naked) void playerspawn()
     __asm push eax
     __asm push ebx
 #else
-	__asm lea ecx, [ebp-0x38]
-	__asm mov eax, edi
-	__asm xor al, 1
-	__asm or al, byte ptr [ecx]
-	__asm mov byte ptr [ecx], al
+    __asm lea ecx, [ebp-0x38] //in [ebp-0x38] value equal player_block = "*((_BYTE *)player + 12481)"
+    __asm mov eax, edi //in di value equal "custom_cond" = ...
+    __asm xor al, 1
+    __asm or al, byte ptr [ecx] //calc arg4 equal block_cond = !(custom_cond && !player_block) = !custom_cond || player_block
+    __asm mov byte ptr [ecx], al
     __asm push ecx
     __asm push esi
     __asm lea eax, [esp-0x04] //push address of argument itself as value of argument =)
@@ -127,7 +127,7 @@ __declspec(naked) void playerspawn()
     __asm jz UseDefaultMdl
 
 #ifndef WIN32
-	__asm mov edi, [esp-0x0C] //from value used for model_name argument getting actual address for model name
+    __asm mov edi, [esp-0x0C] //from value used for model_name argument getting actual address for model name
 #endif
     __asm mov eax, g_addr_model_custom
     __asm jmp eax
@@ -135,7 +135,8 @@ __declspec(naked) void playerspawn()
     __asm UseDefaultMdl:
     __asm mov eax, g_addr_model_normal
 #ifndef WIN32
-	__asm test byte ptr [ebp-0x38], 0
+    // jump to  jbe <dst> // where dst - set default model
+	__asm test 1, byte ptr[ebp - 0x38]
 #endif
     __asm jmp eax
 }
